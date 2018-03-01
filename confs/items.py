@@ -8,7 +8,25 @@
 import scrapy
 
 
-class ConfsItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class Session(scrapy.Item):
+    id = scrapy.Field()
+    title = scrapy.Field()
+    summary = scrapy.Field()
+    tags = scrapy.Field()
+    scheduled_at = scrapy.Field()
+    location = scrapy.Field()
+    language = scrapy.Field()
+    level = scrapy.Field()
+    speakers = scrapy.Field()
+    type = scrapy.Field()
+
+class Speaker(scrapy.Item):
+    id = scrapy.Field()
+    fullname = scrapy.Field()
+    bio = scrapy.Field()
+    country = scrapy.Field()
+    personal_url = scrapy.Field()
+    facebook = scrapy.Field()
+    twitter = scrapy.Field()
+    flickr = scrapy.Field()
+
