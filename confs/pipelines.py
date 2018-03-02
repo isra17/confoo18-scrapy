@@ -7,6 +7,7 @@ from confs.items import Session, Speaker
 INIT_DB = '''
 CREATE TABLE sessions (
     id TEXT PRIMARY KEY,
+    edition TEXT,
     title TEXT,
     summary TEXT,
     scheduled_at TIMESTAMP,
@@ -43,8 +44,8 @@ CREATE TABLE session_speakers (
 
 INSERT_SESSION = '''
 INSERT OR REPLACE INTO sessions(
-    id, title, summary, scheduled_at, location, level
-) VALUES (?, ?, ?, ?, ?, ?)
+    id, edition, title, summary, scheduled_at, location, level
+) VALUES (?, ?, ?, ?, ?, ?, ?)
 '''
 
 INSERT_SPEAKER = '''
@@ -83,6 +84,7 @@ class ConfsPipeline(object):
     def process_session(self, item):
         self.db.execute(INSERT_SESSION, (
             item['id'],
+            item['edition'],
             item['title'],
             item['summary'],
             item['scheduled_at'],

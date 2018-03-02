@@ -10,6 +10,7 @@ import scrapy
 
 class Session(scrapy.Item):
     id = scrapy.Field()
+    edition = scrapy.Field()
     title = scrapy.Field()
     summary = scrapy.Field()
     tags = scrapy.Field()

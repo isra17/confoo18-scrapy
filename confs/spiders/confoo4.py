@@ -12,15 +12,14 @@ SOCIAL_URL_RE = re.compile(r'://([^.]+).+/([^/]+)$')
 
 
 class ConfooSpider(CrawlSpider):
-    name = 'confoo3'
+    name = 'confoo4'
     allowed_domains = ['confoo.ca']
-    start_urls = [
-        'https://confoo.ca/en/yul2018/sessions',
-        'https://confoo.ca/en/yul2018/speakers',
-    ]
+    start_urls = ['https://confoo.ca/en/archive']
 
     rules = (
-        Rule(LinkExtractor(allow=r'/en/yul2018/session/'), callback='parse_session', follow=True),
+        Rule(LinkExtractor(allow=r'/en/[^/]+/sessions'), follow=True),
+        Rule(LinkExtractor(allow=r'/en/[^/]+/speakers'), follow=True),
+        Rule(LinkExtractor(allow=r'/en/[^/]+/session/'), callback='parse_session', follow=True),
         Rule(LinkExtractor(allow=r'/en/speaker/'), callback='parse_speaker', follow=True),
     )
 
@@ -37,8 +36,11 @@ class ConfooSpider(CrawlSpider):
         if date_parts:
             scheduled_at = datetime.strptime(' '.join(date_parts), '%B %d, %Y %H:%M')
 
+        edition = response.url.strip('/').split('/')[-2]
+
         yield Session(
-            id=response.url.strip('/').split('/')[-1],
+            id=edition + '/' + response.url.strip('/').split('/')[-1],
+            edition=edition,
             title=response.css('h1::text').extract_first(),
             summary=response.css('.e-description::text')\
                 .extract_first()\
@@ -66,7 +68,7 @@ class ConfooSpider(CrawlSpider):
         yield Speaker(
             id=response.url.strip('/').split('/')[-1],
             fullname=response.css('h1::text').extract_first(),
-            bio=response.css('.speaker > p::text').extract_first().strip(),
+            bio=response.css('.speaker > p::text').extract_first(),
             country=response.css('.well .flag-icon::attr(title)').extract_first(),
             personal_url=response.css('.well a:not([title])::attr(href)').extract_first(),
             **social
