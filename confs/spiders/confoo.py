@@ -12,7 +12,7 @@ SOCIAL_URL_RE = re.compile(r'://([^.]+).+/([^/]+)$')
 
 
 class ConfooSpider(CrawlSpider):
-    name = 'confoo4'
+    name = 'confoo'
     allowed_domains = ['confoo.ca']
     start_urls = ['https://confoo.ca/en/archive']
 
