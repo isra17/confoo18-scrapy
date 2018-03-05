@@ -36,7 +36,7 @@ class ConfooSpider(CrawlSpider):
         if date_parts:
             scheduled_at = datetime.strptime(' '.join(date_parts), '%B %d, %Y %H:%M')
 
-        edition = response.url.strip('/').split('/')[-2]
+        edition = response.url.strip('/').split('/')[-3]
 
         yield Session(
             id=edition + '/' + response.url.strip('/').split('/')[-1],
